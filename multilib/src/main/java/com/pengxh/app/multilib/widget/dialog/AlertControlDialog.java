@@ -6,12 +6,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pengxh.app.multilib.R;
@@ -20,15 +18,14 @@ import com.pengxh.app.multilib.utils.SizeUtil;
 /**
  * @author: Pengxh
  * @email: 290677893@qq.com
- * @date: 2021-09-04 21:39:25
- * @description: 输入对话框
+ * @date: 2021-09-05 17:15:11
+ * @description: 取消/确定对话框
  */
-public class InputDialog extends Dialog {
+public class AlertControlDialog extends Dialog {
 
-    private static final String TAG = "InputDialog";
     private Context ctx;
     private String title;
-    private String hint;
+    private String message;
     private String positiveBtn;
     private String negativeBtn;
     private OnDialogButtonClickListener listener;
@@ -36,7 +33,7 @@ public class InputDialog extends Dialog {
     public static class Builder {
         private Context context;
         private String title;
-        private String hint;
+        private String message;
         private String positiveBtn;
         private String negativeBtn;
         private OnDialogButtonClickListener listener;
@@ -51,8 +48,8 @@ public class InputDialog extends Dialog {
             return this;
         }
 
-        public Builder setHintMessage(String hint) {
-            this.hint = hint;
+        public Builder setMessage(String message) {
+            this.message = message;
             return this;
         }
 
@@ -71,16 +68,16 @@ public class InputDialog extends Dialog {
             return this;
         }
 
-        public InputDialog build() {
-            return new InputDialog(this);
+        public AlertControlDialog build() {
+            return new AlertControlDialog(this);
         }
     }
 
-    private InputDialog(Builder builder) {
+    private AlertControlDialog(Builder builder) {
         super(builder.context, R.style.DialogStyle);
         this.ctx = builder.context;
         this.title = builder.title;
-        this.hint = builder.hint;
+        this.message = builder.message;
         this.positiveBtn = builder.positiveBtn;
         this.negativeBtn = builder.negativeBtn;
         this.listener = builder.listener;
@@ -90,14 +87,15 @@ public class InputDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configDialogLayout();
-        setContentView(R.layout.dialog_input);
+        setContentView(R.layout.dialog_alert);
+        setCancelable(false);
         setCanceledOnTouchOutside(false);
         initView();
     }
 
     private void initView() {
         TextView dialogTitleView = findViewById(R.id.dialogTitleView);
-        EditText dialogInputView = findViewById(R.id.dialogInputView);
+        TextView dialogMessageView = findViewById(R.id.dialogMessageView);
         Button dialogCancelButton = findViewById(R.id.dialogCancelButton);
         Button dialogConfirmButton = findViewById(R.id.dialogConfirmButton);
 
@@ -105,8 +103,8 @@ public class InputDialog extends Dialog {
             dialogTitleView.setText(title);
         }
 
-        if (!TextUtils.isEmpty(hint)) {
-            dialogInputView.setHint(hint);
+        if (!TextUtils.isEmpty(message)) {
+            dialogMessageView.setText(message);
         }
 
         if (!TextUtils.isEmpty(negativeBtn)) {
@@ -127,9 +125,7 @@ public class InputDialog extends Dialog {
                 @Override
                 public void onClick(View view) {
                     if (listener != null) {
-                        String inputValue = dialogInputView.getText().toString().trim();
-                        Log.d(TAG, "onClick: " + inputValue);
-                        listener.onConfirmClick(inputValue);
+                        listener.onConfirmClick();
                         dismiss();
                     }
                 }
@@ -151,7 +147,7 @@ public class InputDialog extends Dialog {
     }
 
     public interface OnDialogButtonClickListener {
-        void onConfirmClick(String value);
+        void onConfirmClick();
 
         void onCancelClick();
     }

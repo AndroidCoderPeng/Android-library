@@ -1,87 +1,72 @@
 package com.pengxh.app.multilib.utils;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * 将Log日志写入文件中
  */
 public class LogToFile {
     private static final String TAG = "LogToFile";
-    private static final char VERBOSE = 'v';
-    private static final char DEBUG = 'd';
-    private static final char INFO = 'i';
-    private static final char WARN = 'w';
-    private static final char ERROR = 'e';
-    private static File file;
 
-    public static void initLog(Context mContext) {
-        Context context = mContext.getApplicationContext();
-        String packageName = context.getPackageName();
-        //获取到的包名带有“.”方便命名，取最后一个作为文件名，例如:com.pengxh.autodingding
-        String[] split = packageName.split("\\.");//先转义.之后才能分割
-        int length = split.length;
-        String fileName = split[length - 1] + ".log";
-        file = new File(context.getFilesDir(), fileName);
-        if (!file.exists()) {
+    public static File initLog(Context context) {
+        File documentDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.CHINA).format(new Date());
+        File logFile = new File(documentDir.toString() + File.separator + "Log_" + timeStamp + ".txt");
+        if (!logFile.exists()) {
             try {
-                file.createNewFile();
+                logFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        /**
-         * 打印路径：/data/user/0/com.pengxh.autodingding/files/autodingding.log
-         * 真实路径：/data/data/com.pengxh.autodingding/files/autodingding.log
-         * */
-        Log.d(TAG, "initLog: " + file.getAbsolutePath());
+        Log.d(TAG, "initLog: " + logFile.getAbsolutePath());
+        return logFile;
     }
 
-    public static void v(String tag, String msg) {
-        writeToFile(VERBOSE, tag, msg);
-    }
-
-    public static void d(String tag, String msg) {
-        writeToFile(DEBUG, tag, msg);
-    }
-
-    public static void i(String tag, String msg) {
-        writeToFile(INFO, tag, msg);
-    }
-
-    public static void w(String tag, String msg) {
-        writeToFile(WARN, tag, msg);
-    }
-
-    public static void e(String tag, String msg) {
-        writeToFile(ERROR, tag, msg);
-    }
-
-    private static void writeToFile(char type, String tag, String msg) {
-        String log = TimeUtil.timestampToTime(System.currentTimeMillis(), TimeUtil.TIME) + " " + type + " " + tag + " " + msg + "\n";//log日志内容，可以自行定制
-        //准备写入
-        FileOutputStream outputStream;
-        BufferedWriter bufferedWriter = null;
+    /**
+     * @param log 待写入的内容
+     */
+    public static void write(Context context, String log) {
         try {
-            outputStream = new FileOutputStream(file, true);
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-            bufferedWriter.write(log);
+            FileWriter fileWriter = new FileWriter(initLog(context), true);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+            writer.write(log);
+            writer.newLine(); //换行
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (bufferedWriter != null) {
-                try {
-                    bufferedWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+    }
+
+    public static String read(File file) {
+        StringBuilder builder;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String line = bufferedReader.readLine();
+            builder = new StringBuilder();
+            while (line != null) {
+                builder.append(line);
+                builder.append("\n");
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();
+            return builder.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Checkable;
 
 import com.pengxh.app.multilib.R;
-import com.pengxh.app.multilib.utils.DensityUtil;
+import com.pengxh.app.multilib.utils.SizeUtil;
 
 /**
  * @description: 自定义多选框
@@ -45,7 +45,7 @@ public class SmoothCheckBox extends View implements Checkable, View.OnClickListe
     private boolean attachedToWindow;
     private boolean isChecked;
 
-    private int checkBoxSize = DensityUtil.dp2px(getContext(), 30);
+    private int checkBoxSize = SizeUtil.dp2px(getContext(), 30);
     private int bitmapColor;
     private int borderColor;
     private Xfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);//颜色混合效果，简单解释就是动态渐变颜色
@@ -91,7 +91,7 @@ public class SmoothCheckBox extends View implements Checkable, View.OnClickListe
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
         if (visibility == VISIBLE && drawBitmap == null) {
-            int reallySize = DensityUtil.dp2px(getContext(), checkBoxSize);
+            int reallySize = SizeUtil.dp2px(getContext(), checkBoxSize);
             //长宽相等
             drawBitmap = Bitmap.createBitmap(reallySize, reallySize, Bitmap.Config.ARGB_8888);
             bitmapCanvas = new Canvas(drawBitmap);
@@ -137,16 +137,16 @@ public class SmoothCheckBox extends View implements Checkable, View.OnClickListe
         float p = isChecked ? progress : (1.0f - progress);
         if (p < BOUNCE_VALUE) {
             //动态改变半径大小
-            radius -= DensityUtil.dp2px(getContext(), 2) * p;
+            radius -= SizeUtil.dp2px(getContext(), 2) * p;
         } else if (p < BOUNCE_VALUE * 2) {
-            radius -= (1 - p) * DensityUtil.dp2px(getContext(), 2);
+            radius -= (1 - p) * SizeUtil.dp2px(getContext(), 2);
         }
 
         float centerX = getMeasuredWidth() >> 1;//圆心X坐标
         float centerY = getMeasuredHeight() >> 1;//圆心Y坐标
 
         borderPaint.setColor(borderColor);
-        canvas.drawCircle(centerX, centerY, radius - DensityUtil.dp2px(getContext(), 1), borderPaint);
+        canvas.drawCircle(centerX, centerY, radius - SizeUtil.dp2px(getContext(), 1), borderPaint);
 
         backgroundPaint.setColor(bitmapColor);
 

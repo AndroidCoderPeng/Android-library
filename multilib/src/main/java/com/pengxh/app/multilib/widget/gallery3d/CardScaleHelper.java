@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
-import com.pengxh.app.multilib.utils.DensityUtil;
+import com.pengxh.app.multilib.utils.SizeUtil;
 
 public class CardScaleHelper {
     private RecyclerView mRecyclerView;
@@ -62,7 +62,7 @@ public class CardScaleHelper {
             @Override
             public void run() {
                 mCardGalleryWidth = mRecyclerView.getWidth();
-                mCardWidth = mCardGalleryWidth - DensityUtil.dp2px(mContext, 2 * (mPagePadding + mShowLeftCardWidth));
+                mCardWidth = mCardGalleryWidth - SizeUtil.dp2px(mContext, 2 * (mPagePadding + mShowLeftCardWidth));
                 mOnePageWidth = mCardWidth;
                 mRecyclerView.smoothScrollToPosition(mCurrentItemPos);
                 onScrolledChangedCallback();

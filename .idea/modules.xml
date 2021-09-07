@@ -5,7 +5,10 @@
       <module fileurl="file://$PROJECT_DIR$/Android-library.iml" filepath="$PROJECT_DIR$/Android-library.iml" group="Android-library" />
       <module fileurl="file://$PROJECT_DIR$/app/Android-library-app.iml" filepath="$PROJECT_DIR$/app/Android-library-app.iml" group="Android-library/app" />
       <module fileurl="file://$PROJECT_DIR$/multilib/Android-library-multilib.iml" filepath="$PROJECT_DIR$/multilib/Android-library-multilib.iml" group="Android-library/multilib" />
+      <module fileurl="file://$PROJECT_DIR$/Desktop-Pengxh-Android-library.iml" filepath="$PROJECT_DIR$/Desktop-Pengxh-Android-library.iml" group="Android-library" />
       <module fileurl="file://$PROJECT_DIR$/Pengxh-Android-library.iml" filepath="$PROJECT_DIR$/Pengxh-Android-library.iml" group="Android-library" />
+      <module fileurl="file://$PROJECT_DIR$/app/Pengxh-Android-library-app.iml" filepath="$PROJECT_DIR$/app/Pengxh-Android-library-app.iml" group="Android-library/app" />
+      <module fileurl="file://$PROJECT_DIR$/multilib/Pengxh-Android-library-multilib.iml" filepath="$PROJECT_DIR$/multilib/Pengxh-Android-library-multilib.iml" group="Android-library/multilib" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Android-library/app" />
       <module fileurl="file://$PROJECT_DIR$/multilib/multilib.iml" filepath="$PROJECT_DIR$/multilib/multilib.iml" group="Android-library/multilib" />
     </modules>

@@ -10,9 +10,7 @@ public class SaveKeyValues {
 
     @SuppressLint({"StaticFieldLeak"})
     private static Context context;
-    private static SharedPreferences sharedPreferences;
-    private static SharedPreferences.Editor editor;
-    private static String file;
+    private static String fileName;
 
     public static void initSharedPreferences(Context mContext) {
         context = mContext.getApplicationContext();
@@ -20,16 +18,16 @@ public class SaveKeyValues {
         //获取到的包名带有“.”方便命名，取最后一个作为sp文件名，例如:com.pengxh.app.androidlib
         String[] split = packageName.split("\\.");//先转义.之后才能分割
         int length = split.length;
-        file = split[length - 1];
-        Log.d(TAG, file);
+        fileName = split[length - 1];
+        Log.d(TAG, fileName);
     }
 
     /**
      * 存储
      */
     public static void putValue(String key, Object object) {
-        sharedPreferences = context.getSharedPreferences(file, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         if (object instanceof String) {
             editor.putString(key, (String) object);
         } else if (object instanceof Integer) {
@@ -50,7 +48,7 @@ public class SaveKeyValues {
      * 获取保存的数据
      */
     public static Object getValue(String key, Object defaultObject) {
-        sharedPreferences = context.getSharedPreferences(file, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         if (defaultObject instanceof String) {
             return sharedPreferences.getString(key, (String) defaultObject);
         } else if (defaultObject instanceof Integer) {
@@ -70,23 +68,27 @@ public class SaveKeyValues {
      * 移除某个key值已经对应的值
      */
     public static void removeKey(String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(key);
-        editor.commit();
+        editor.apply();
     }
 
     /**
      * 清除所有数据
      */
     public static void clearAll() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     /**
      * 查询某个key是否存在
      */
     public static boolean containsKey(String key) {
-        sharedPreferences = context.getSharedPreferences(file, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         return sharedPreferences.contains(key);
     }
 }

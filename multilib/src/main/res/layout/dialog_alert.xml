@@ -18,33 +18,26 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal"
-            android:paddingVertical="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
             android:text="@string/app_name"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/dialogMessageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:background="@drawable/bg_layout_hint">
-
-            <EditText
-                android:id="@+id/dialogInputView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingHorizontal="5dp"
-                android:paddingVertical="7dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/hintColor"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:layout_marginVertical="8dp"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:text="@string/app_name"
+            android:textColor="@color/black" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@color/gray" />
 
         <LinearLayout

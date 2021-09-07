@@ -10,44 +10,7 @@
         <item name="android:textSize">22sp</item>
     </style>
 
-    <!-- ==================带有输入框的对话框（InputDialog）================== -->
-    <style name="InputDialog">
-        <!-- alertDialog窗口背景色 -->
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <!--dialog是否有边框-->
-        <item name="android:windowFrame">@null</item>
-        <!--dialog是否有标题-->
-        <item name="android:windowNoTitle">true</item>
-        <!--是否浮现在activity之上-->
-        <item name="android:windowIsFloating">true</item>
-        <!--是否半透明-->
-        <item name="android:windowIsTranslucent">true</item>
-        <!--是否有遮盖(eg.Activity的闪屏页)-->
-        <item name="android:windowContentOverlay">@null</item>
-        <!--进出动画-->
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <!--背景是否模糊显示-->
-        <item name="android:backgroundDimEnabled">true</item>
-        <!--显示软件盘-->
-        <item name="android:windowSoftInputMode">stateAlwaysVisible</item>
-    </style>
-
-    <!-- ==================仿iOS样式多选对话框（MultiSelectDialog）================== -->
-    <style name="MultiSelectDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowTitleStyle">@null</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowAnimationStyle">@style/MultiSelectDialog.AnimationStyle</item>
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-    </style>
-
-    <style name="MultiSelectDialog.AnimationStyle" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
-    </style>
-
-    <!-- ==================自定义权限申请对话框（PermissionDialog）================== -->
-    <style name="PermissionDialog">
+    <style name="DialogStyle">
         <!-- Dialog的windowFrame框为无 -->
         <item name="android:windowFrame">@null</item>
         <!-- 是否显示title -->
@@ -60,5 +23,27 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <!-- 背景变灰：整个屏幕变灰，配合setCanceledOnTouchOutside(false) -->
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="ActionSheetDialogStyle">
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!-- ActionSheet进出动画 -->
+    <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/action_sheet_in</item>
+        <item name="android:windowExitAnimation">@anim/action_sheet_out</item>
     </style>
 </resources>

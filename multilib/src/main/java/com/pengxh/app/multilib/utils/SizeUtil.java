@@ -1,7 +1,8 @@
 package com.pengxh.app.multilib.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -10,14 +11,12 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
-import java.util.HashMap;
-
-public class DensityUtil {
+public class SizeUtil {
 
     /**
      * 解决ScrollView嵌套另一个可滑动的View时，高度异常的问题
      */
-    public static <T extends AbsListView> void measureViewHeight(Context context, T view) {
+    public static <T extends AbsListView> void measureViewHeight(Context context, T view, int adapterCount) {
         ListAdapter adapter = view.getAdapter();
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (adapter == null) {
@@ -25,10 +24,9 @@ public class DensityUtil {
         }
         int totalHeight = 0;
         View v;
-        for (int i = 0; i < adapter.getCount(); i++) {
+        for (int i = 0; i < adapterCount; i++) {
             v = adapter.getView(i, null, view);
-            Integer horizontalPixels = getDisplaySize(context).get("HorizontalPixels");
-            int i1 = View.MeasureSpec.makeMeasureSpec(horizontalPixels, View.MeasureSpec.EXACTLY);
+            int i1 = View.MeasureSpec.makeMeasureSpec(getScreenWidth(context), View.MeasureSpec.EXACTLY);
             int i2 = View.MeasureSpec.makeMeasureSpec(i1, View.MeasureSpec.UNSPECIFIED);
             v.measure(i1, i2);
             totalHeight += v.getMeasuredHeight();
@@ -38,27 +36,52 @@ public class DensityUtil {
     }
 
     /**
-     * 获取设备横向和纵向像素，以及dpi
+     * 获取 DisplayMetrics
+     *
+     * @return
      */
-    public static HashMap<String, Integer> getDisplaySize(Context context) {
-        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        manager.getDefaultDisplay().getMetrics(dm);
-        int displayWidthPx = dm.widthPixels;
-        // 手机纵向像素高度还需要加上底部导航栏高度
-        int height = dm.heightPixels;
-        Resources res = context.getResources();
-        //获取导航栏
-        int navigationBarId = res.getIdentifier("navigation_bar_height", "dimen", "android");
-        int navigationBarHeight = res.getDimensionPixelSize(navigationBarId);
-        int displayHeightPx = height + navigationBarHeight;
-        //获取手机dpi
-        int displayDpi = dm.densityDpi;
-        HashMap<String, Integer> displaySizeMap = new HashMap<>();
-        displaySizeMap.put("HorizontalPixels", displayWidthPx);
-        displaySizeMap.put("VerticalPixels", displayHeightPx);
-        displaySizeMap.put("PixelDensity", displayDpi);
-        return displaySizeMap;
+    public static DisplayMetrics getDisplayMetrics(Context context) {
+        return context.getResources().getDisplayMetrics();
+    }
+
+    /**
+     * 获取屏幕宽度
+     *
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        return getDisplayMetrics(context).widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度
+     *
+     * @return
+     */
+    public static int getScreenHeight(Context context) {
+        int screenHeight = getDisplayMetrics(context).heightPixels;
+        if (isXiaomi() && miuiNavigationGestureEnabled(context)) {
+            screenHeight += getResourceNavHeight(context);
+        }
+        return screenHeight;
+    }
+
+    public static boolean isXiaomi() {
+        return Build.MANUFACTURER.toLowerCase().equals("xiaomi");
+    }
+
+    private static boolean miuiNavigationGestureEnabled(Context context) {
+        int val = Settings.Global.getInt(context.getContentResolver(), "force_fsg_nav_bar", 0);
+        return val != 0;
+    }
+
+    private static int getResourceNavHeight(Context context) {
+        // 小米4没有nav bar, 而 navigation_bar_height 有值
+        int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return -1;
     }
 
     /**
@@ -67,7 +90,7 @@ public class DensityUtil {
      * Dpi（dots per inch 像素密度）
      * Density 密度
      */
-    public static float getScreenDensity(Context context) {
+    private static float getScreenDensity(Context context) {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         manager.getDefaultDisplay().getMetrics(dm);

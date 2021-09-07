@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">Multilib</string>
-    <string name="confirm">确定</string>
-    <string name="cancel">取消</string>
-    <string name="input_hint">请输入您要输入的内容</string>
 </resources>

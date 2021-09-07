@@ -56,10 +56,10 @@ public class KeyBoardView extends LinearLayout implements View.OnClickListener {
     public void onClick(View v) {
         if (v instanceof TextView) {
             // 如果点击的是TextView
-            String number = ((TextView) v).getText().toString();
-            if (!TextUtils.isEmpty(number)) {
+            String value = ((TextView) v).getText().toString();
+            if (!TextUtils.isEmpty(value)) {
                 if (listener != null) {
-                    listener.onClick(number);
+                    listener.onClick(value);
                 }
             }
         } else if (v instanceof ImageView) {
@@ -75,7 +75,7 @@ public class KeyBoardView extends LinearLayout implements View.OnClickListener {
     }
 
     public interface KeyboardClickListener {
-        void onClick(String number);
+        void onClick(String value);
 
         void onDelete();
     }
